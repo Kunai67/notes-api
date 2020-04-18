@@ -1,11 +1,11 @@
 <?php
 class Notes {
     private $conn;
-    private $uid;
-    private $title = 'Untitled';
-    private $body = 'Empty Note';
+    public $uid;
+    public $title = 'Untitled';
+    public $body = 'Empty Note';
 
-    public function __construct($conn) {
+    public function __construct(PDO $conn) {
         $this->conn = $conn;
     }
 
@@ -40,9 +40,12 @@ class Notes {
         $stmt->bindParam(':title', $this->title);
         $stmt->bindParam(':body', $this->body);
 
-        $stmt->execute();
-
-        return $stmt;
+        // execute query
+        if($stmt->execute()){
+            return true;
+        }
+    
+        return false;
     }
 
     public function update() {
@@ -54,9 +57,12 @@ class Notes {
         $stmt->bindParam(':title', $this->title);
         $stmt->bindParam(':body', $this->body);
 
-        $stmt->execute();
-
-        return $stmt;
+        // execute query
+        if($stmt->execute()){
+            return true;
+        }
+    
+        return false;
     }
 
     public function delete() {

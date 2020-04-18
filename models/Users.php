@@ -1,51 +1,78 @@
 <?php
 class Users {
-    private $table = 'user-details';
     private $conn;
+    public $id;
+    public $firstname;
+    public $lastname;
 
-    private $id;
-    private $firstName;
-    private $lastName;
-
-    public function __construct(PDO $db) {
-        $this->conn = $db;
+    public function __construct(PDO $conn) {
+        $this->conn = $conn;
     }
 
     public function read() {
-        $query = 'SELECT * FROM ' . $this->table;
+        $query = 'SELECT * FROM users';
 
-        $stmt = $conn->prepare($query);
+        $stmt = $this->conn->prepare($query);
 
         $stmt->execute();
 
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        return $result;
+        return $stmt;
     }
 
-    public function read_single() {
-        $query = 'SELECT * FROM ' . $this->table . ' WHERE id=:id';
+    public function read_single () {
+        $query = 'SELECT * FROM users WHERE id=?';
 
-        $stmt = $conn->prepare($query);
+        $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(':id', $this->id);
+        $stmt->bindParam(1, $this->id);
 
         $stmt->execute();
 
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        $this->firstName = $result['firstName'];
-        $this->lastName = $result['lastName'];
+        return $stmt;
     }
 
     public function create() {
-        $query = 'INSERT INTO ' . $this->table . ' firstName=:firstName, lastName=:lastName';
+        $query = 'INSERT INTO users (firstname, lastname) VALUES (:firstname, :lastname);';
 
-        $stmt = $conn->prepare($query);
+        $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(':firstName', $this->firstName);
-        $stmt->bindParam(':lastName', $this->lastName);
+        $stmt->bindParam(':firstname', $this->firstname);
+        $stmt->bindParam(':lastname', $this->lastname);
+
+        // execute query
+        if($stmt->execute()){
+            return true;
+        }
+    
+        return false;
+    }
+
+    public function update() {
+        $query = 'UPDATE users SET firstname=:firstname, lastname=:lastname WHERE id=:id';
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':id', $this->id);
+        $stmt->bindParam(':firstname', $this->firstname);
+        $stmt->bindParam(':lastname', $this->lastname);
+
+        // execute query
+        if($stmt->execute()){
+            return true;
+        }
+    
+        return false;
+    }
+
+    public function delete() {
+        $query = 'DELETE FROM users WHERE id=?';
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(1, $this->id);
 
         $stmt->execute();
+
+        return $stmt;
     }
 }
