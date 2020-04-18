@@ -72,8 +72,11 @@ class Notes {
 
         $stmt->bindParam(1, $this->uid);
 
-        $stmt->execute();
-
-        return $stmt;
+        // execute query
+        if($stmt->execute()){
+            return true;
+        }
+    
+        return false;
     }
 }

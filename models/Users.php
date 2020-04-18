@@ -71,8 +71,11 @@ class Users {
 
         $stmt->bindParam(1, $this->id);
 
-        $stmt->execute();
-
-        return $stmt;
+        // execute query
+        if($stmt->execute()){
+            return true;
+        }
+    
+        return false;
     }
 }
