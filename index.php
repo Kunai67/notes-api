@@ -20,11 +20,14 @@ $app->group('/notes', function (RouteCollectorProxy $group) {
     $group->post('/delete', 'NotesController:delete');
 });
 
-// $app->group('/users', function (RouteCollectorProxy $group) {
-//     $group->get('/', function ($request, $response, $args) {
-        
-//     });
-// });
+$app->group('/users', function (RouteCollectorProxy $group) {
+    $group->get('/', function ($request, $response, $args) {
+        $group->get('/', 'UsersController:read');
+        $group->post('/create', 'UsersController:create');
+        $group->post('/update', 'UsersController:update');
+        $group->post('/delete', 'UsersController:delete');
+    });
+});
 
 $app->get('/', function (Request $request, Response $response, $args) {
     $response->getBody()->write('Welcome to the API');
