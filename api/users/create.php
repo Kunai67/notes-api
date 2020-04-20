@@ -21,16 +21,8 @@ if (
     $users->firstname = $data->firstname;
     $users->lastname = $data->lastname;
   
-    if ($users->create()) {
-        http_response_code(201);
-        echo json_encode(array("message" => "User was created."));
-    }
-    else {
-        http_response_code(503);
-        echo json_encode(array("message" => "Unable to create user."));
-    }
+    return $users->create();
 }
 else {
-    http_response_code(400);
-    echo json_encode(array("message" => "Data incomplete. Please provide all necessary information."));
+    return false;
 }

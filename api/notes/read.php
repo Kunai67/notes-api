@@ -38,9 +38,6 @@ if($num>0){
         array_push($notes_arr["records"], $product_item);
     }
   
-    // set response code - 200 OK
-    http_response_code(200);
-  
     // show notes data in json format
-    echo json_encode($notes_arr);
+    return json_encode($notes_arr);
 }

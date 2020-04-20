@@ -38,9 +38,6 @@ if($num>0){
         array_push($users_arr["records"], $user);
     }
   
-    // set response code - 200 OK
-    http_response_code(200);
-  
     // show users data in json format
-    echo json_encode($users_arr);
+    return json_encode($users_arr);
 }
